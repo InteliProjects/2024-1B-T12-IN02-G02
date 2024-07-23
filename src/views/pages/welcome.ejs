@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome</title>
+  <!-- Adding style on the tags and divs -->
+  <style>
+    .Headline {
+      display: flex;
+      justify-content: center;
+    }
+    .Welcome {
+      margin-right: 10px;
+      font-size: 4em;
+       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .paperAirplane {
+      height: 100px;
+      width: 100px;
+       margin-top: 1cm;
+       float:left;
+    }
+    .imageDiv {
+      display: flex;
+      align-items: flex-start;
+    }
+    .globalImage {
+      height: 250px; width: 280px; margin:auto
+    }
+    .teamStatus {
+      display: flex;
+      justify-content: center;
+    }
+    .online {
+      margin-right: 4em;
+      color: rgb(95, 248, 95);
+    }
+    .offline {
+      color: rgb(236, 173, 57);
+    }
+    .happinessMeterContainer {
+      display: flex;
+      justify-content: center;
+    }
+    .happinessMeter {
+      margin-left: 1cm;
+      width: 70%;
+    }
+    .slider-container {
+      width: 90%;
+      height: 20px;
+      position: relative;
+      background: linear-gradient(to right, #006d77,#ffffff,#fff700);
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    .slider-thumb {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: white;
+      border: 2px solid #006d77;
+      border-radius: 50%;
+      top: 50%;
+      left: calc(50%);
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+    }
+    .marker {
+      position: absolute;
+      width: 2px;
+      height: 10px;
+      background-color: black;
+    }
+    .marker-number {
+      position: absolute;
+      width: 20px;
+      top: 30px;
+      text-align: center;
+      font-size: 12px;
+    }
+    .submitButton {
+      float: right;
+      margin-right: 0.75cm;
+      margin-top: 1cm;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #006d77;
+      color: #ffffff;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <!--Adding the welcome tag and it's side image-->
+  <div class="Headline">   
+    <h1 class="Welcome">Welcome</h1>
+    <img class="paperAirplane" src="/images/aviaoDePapel.png">
+  </div>
+
+  <!--Creating a center image-->
+  <div class="imageDiv">
+    <img class="globalImage" src="/images/globalImage.png">
+  </div>
+
+  <!--Adding the team status count-->
+  <div class="teamStatus">
+    <h4 class="online">Team Members Online: <%= onlineCount %></h4>
+    <h4 class="offline">Team Members Offline: <%= offlineCount %></h4>
+  </div>
+
+  <div class="happinessMeterContainer">
+    <!--Adding the happiness meter-->
+    <div class="happinessMeter">
+      <h4>How do you feel today?</h4>
+
+      <!--Slider for happiness meter -->
+      <div class="slider-container">
+        <!--All of the markers in the slider-->
+        <div class="marker" style="left: 12.5%;"></div>
+        <div class="marker" style="left: 25%;"></div>
+        <div class="marker" style="left: 37.5%;"></div>
+        <div class="marker" style="left: 50%;"></div>
+        <div class="marker" style="left: 65.5%;"></div>
+        <div class="marker" style="left: 75%;"></div>
+        <div class="marker" style="left: 87.5%;"></div>
+        <div class="marker-number" style="left: 0%;">Very Sad</div>
+        <div class="marker-number" style="left: 47.5%;">Neutral</div>
+        <div class="marker-number" style="left: 99%;">Very Happy</div>
+        <div class="slider-thumb" id="sliderThumb"></div>
+      </div>
+      <!--Submit button for the user happiness value-->
+      <button class="submitButton" id="submitHappiness">Submit Happiness Level</button> <!-- Button to submit happiness level -->
+    </div>
+  </div>
+  <br>
+  <script>
+    // JavaScript code to handle slider and submit button
+    document.addEventListener('DOMContentLoaded', function () {
+      const sliderThumb = document.getElementById('sliderThumb');
+      const sliderContainer = document.querySelector('.slider-container');
+      const markers = document.querySelectorAll('.marker');
+      const submitButton = document.getElementById('submitHappiness');
+      let happinessMeter = 5; // Default happiness level
+
+      // Event listener for slider thumb
+      sliderThumb.addEventListener('mousedown', function (e) {
+        const onMouseMove = function (e) {
+          let newLeft = e.clientX - sliderContainer.getBoundingClientRect().left - sliderThumb.offsetWidth / 2;
+          let rightEdge = sliderContainer.offsetWidth - sliderThumb.offsetWidth;
+          if (newLeft < 0) {
+            newLeft = 0;
+          } else if (newLeft > rightEdge) {
+            newLeft = rightEdge;
+          }
+
+          // Check if the thumb is close to any marker
+          markers.forEach(function (marker) {
+            let markerLeft = marker.offsetLeft;
+            if (Math.abs(newLeft - markerLeft) <= 5) {
+              newLeft = markerLeft;
+            }
+          });
+
+          // Update the position of the thumb
+          sliderThumb.style.left = newLeft + 'px';
+          happinessMeter = Math.round((parseInt(sliderThumb.style.left) / rightEdge) * 100 / 10);
+        };
+
+        // Add event listeners for mousemove and mouseup events
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', function () {
+          document.removeEventListener('mousemove', onMouseMove);
+        }, { once: true });
+      });
+
+      // Event listener for submit button
+      submitButton.addEventListener('click', function () {
+        fetch('/user/update-happiness', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ happinessMeter })
+        })
+        .then(response => response.json())
+
+        // Handle the response
+        .then(data => {
+          if (data.error) {
+            alert('Error: ' + data.error);
+          } else {
+            alert('Happiness meter updated successfully');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

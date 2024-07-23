@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>New Sails App</title>
+
+  <!-- Viewport mobile tag for sensible mobile support -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <% /* If you want to discourage search engines from indexing this site, uncomment the following line: */ %>
+  <% /* <meta name="robots" content="noindex"> */ %>
+
+  <!-- Stylesheets and Preprocessors -->
+  <!--STYLES-->
+  <link rel="stylesheet" href="/styles/importer.css">
+  <!--STYLES END-->
+</head>
+
+<body>
+  <!-- SideBar -->
+  <div class="sidebar">
+    <div class="user-profile">
+      <img src="/images/user-avatar.png" alt="User Avatar" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 12px;">
+      <h2>User</h2>
+    </div>
+    <hr style="border: 1px solid rgba(255, 255, 255, 0.2);">
+    <div class="menu-title">Main</div>
+    <a href="/welcome">
+      <img src="/images/home.svg" alt="Home Icon">
+      Home Page
+    </a>
+    <a href="/team-page">
+      <img src="/images/team.svg" alt="Team Icon">
+      Your Team
+    </a>
+    <div class="menu-assessment">
+      <a href="javascript:void(0)" onclick="toggleDropdown()">
+        <img src="/images/assessment.svg" alt="Assessment Icon">
+        Assessment
+        <img src="/images/seta.svg" alt="Arrow Icon" class="dropdown-arrow">
+      </a>
+      <div class="submenu" id="assessment-submenu">
+        <a href="/assessment/individual">
+          <img src="/images/individual.svg" alt="Individual Icon">
+          Individual
+        </a>
+        <a href="/assessment/group">
+          <img src="/images/group.svg" alt="Group Icon">
+          Group
+        </a>
+        <a href="/assessment/feedback">
+          <img src="/images/feedback.svg" alt="Feedback Icon">
+          Feedback
+        </a>
+      </div>
+    </div>
+    <hr style="border: 1px solid rgba(255, 255, 255, 0.2);">
+    <div class="menu-title">Settings</div>
+    <a href="/settings">
+      <img src="/images/settings.svg" alt="Settings Icon">
+      Settings
+    </a>
+    <a href="/help">
+      <img src="/images/help.svg" alt="Help Icon">
+      Help
+    </a>
+    <a href="/logout" style="color: #FF6F61;">
+      <img src="/images/logout.svg" alt="Logout Icon">
+      Logout Account
+    </a>
+  </div>
+
+  <div class="content">
+    <%- body %>
+  </div>
+
+  <style>
+    body {
+      display: flex;
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+    }
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: #1E5A6F;
+      color: #FFF;
+      padding: 24px;
+      box-sizing: border-box;
+      position: fixed;
+      top: 0;
+      left: 0;
+      border-right: 1px solid rgba(0, 0, 0, 0.10);
+    }
+    .sidebar h2 {
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      margin: 12px 0;
+    }
+    .sidebar a {
+      color: #FFF;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+    .sidebar a img {
+      width: 20px;
+      height: 20px;
+      margin-right: 12px;
+    }
+    .sidebar .menu-title {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      margin: 24px 0 12px;
+    }
+    .sidebar .menu-assessment {
+      cursor: pointer;
+    }
+    .sidebar .submenu {
+      padding-left: 36px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .submenu.show {
+      max-height: 200px; /* ajuste o valor conforme necessário */
+      transition: max-height 0.5s ease-in;
+    }
+    .dropdown-arrow {
+      transition: transform 0.5s ease;
+      margin-left: auto; /* Alinha a seta à direita */
+    }
+    .rotate {
+      transform: rotate(90deg);
+    }
+    .content {
+      margin-left: 250px;
+      padding: 24px;
+      box-sizing: border-box;
+      width: calc(100% - 250px);
+      overflow: auto;
+    }
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 200px;
+      }
+      .content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+      }
+    }
+    @media (max-width: 480px) {
+      .sidebar {
+        width: 150px;
+      }
+      .content {
+        margin-left: 150px;
+        width: calc(100% - 150px);
+      }
+    }
+  </style>
+  <!-- SideBar END -->
+
+  <!--SCRIPTS-->
+  <script src="/dependencies/sails.io.js"></script>
+  <script>
+    function toggleDropdown() {
+      var submenu = document.getElementById("assessment-submenu");
+      var arrow = document.querySelector(".dropdown-arrow");
+      if (submenu.classList.contains("show")) {
+        submenu.classList.remove("show");
+        arrow.classList.remove("rotate");
+      } else {
+        submenu.classList.add("show");
+        arrow.classList.add("rotate");
+      }
+    }
+  </script>
+  <!--SCRIPTS END-->
+</body>
+</html>

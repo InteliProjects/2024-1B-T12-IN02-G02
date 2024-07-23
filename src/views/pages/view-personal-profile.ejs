@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <style>
+    body { 
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+
+    /* Container for the profile section */
+    .profile-container { 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        background-color: white;
+        margin-top: 40px; 
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .h1 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin-left: 315px;
+      margin-top: 70px;
+    }
+    /* Header section containing profile picture and status */
+    .profile-header { 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    /* Profile picture styling */
+    .profile-pic {
+      align-items: baseline;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    /* Camera icon positioning and styling */
+    .camera-icon {
+        position: absolute;
+        bottom: 23px;
+        right: 8px;
+        background-color: white;
+        border-radius: 50%;
+        padding: 5px;
+    }
+
+    /* Status section styling */
+    .status {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    /* Green dot indicating active status */
+    .status-dot {
+        width: 10px;
+        height: 10px;
+        background-color: green;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+
+    /* Grid layout for profile details */
+    .profile-details {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px 20px;
+        margin-top: 20px;
+    }
+
+    /* Styling for each detail item */
+    .detail-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Styling for each detail item */
+    .detail-button {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 20px;
+    }
+
+    /* Label styling */
+    .detail-item label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    /* Input field styling */
+    .detail-item input,
+    .detail-item select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        font-size: 14px;
+    }
+
+    /* Styling for disabled input fields */
+    .detail-item input[disabled] {
+        color: #555;
+    }
+
+    /* Email item spans 2 columns */
+    .email-item {
+        grid-column: span 2;
+    }
+
+    /* Submit button styling */
+    .submit-btn {
+        padding: 12px 72px;
+        background-color: #1E5A6F;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .submit-btn:hover {
+        background-color: #174a5b;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <div class="profile-header">
+      <img src="<%= user.profileImage || '/images/default-profile.jpg' %>" alt="Profile Picture" class="profile-pic">
+      <div class="camera-icon">
+        <img src="images/camera-icon.png" width="25px" alt="Camera Icon">
+      </div>
+      <div class="status">
+        <span class="status-dot"></span> Active
+      </div>
+    </div>
+    <h1>Profile Information</h1>
+    <div class="profile-details">
+      <!-- Name -->
+      <div class="detail-item">
+        <label>Name</label>
+        <input type="text" value="<%= user.name %>" disabled>
+      </div>
+      <!-- Gender -->
+      <div class="detail-item">
+        <label>Gender</label>
+        <input type="text" value="<%= user.gender %>" disabled>
+      </div>
+      <!-- Pronouns -->
+      <div class="detail-item">
+        <label>Pronouns</label>
+        <input type="text" value="<%= user.pronouns %>" disabled>
+      </div>
+      <!-- First Language -->
+      <div class="detail-item">
+        <label>First Language</label>
+        <input type="text" value="<%= user.firstLanguage %>" disabled>
+      </div>
+      <!-- Time Zone -->
+      <div class="detail-item">
+        <label>Time Zone</label>
+        <input type="text" value="<%= user.timeZone %>" disabled>
+      </div>
+      <!-- Phone Number -->
+      <div class="detail-item">
+        <label>Phone Number</label>
+        <input type="tel" value="<%= user.phone %>" disabled>
+      </div>
+      <!-- Nationality -->
+      <div class="detail-item">
+        <label>Nationality</label>
+        <select id="country" name="country" disabled>
+          <option value="">Select a nationality</option>
+          <option value="Netherlands" <%= user.country === 'Netherlands' ? 'selected' : '' %>>Netherlands</option>
+          <option value="Brazil" <%= user.country === 'Brazil' ? 'selected' : '' %>>Brazil</option>
+          <option value="USA" <%= user.country === 'USA' ? 'selected' : '' %>>USA</option>
+          <option value="Germany" <%= user.country === 'Germany' ? 'selected' : '' %>>Germany</option>
+          <option value="Morocco" <%= user.country === 'Morocco' ? 'selected' : '' %>>Morocco</option>
+          <option value="Belgium" <%= user.country === 'Belgium' ? 'selected' : '' %>>Belgium</option>
+          <option value="China" <%= user.country === 'China' ? 'selected' : '' %>>China</option>
+          <option value="Peru" <%= user.country === 'Peru' ? 'selected' : '' %>>Peru</option>
+          <option value="UK" <%= user.country === 'UK' ? 'selected' : '' %>>United Kingdom</option>
+          <option value="Senegal" <%= user.country === 'Senegal' ? 'selected' : '' %>>Senegal</option>
+      </select><br>
+      </div>
+      <!-- Birthdate -->
+      <div class="detail-item">
+        <label>Birthdate</label>
+        <input type="date" value="<%= user.birthdate %>" disabled>
+      </div>
+      <!-- University -->
+      <div class="detail-item">
+        <label>University</label>
+        <select id="university" name="university" disabled>
+          <option value="">Select a university</option> <!-- Default option shown if no university is selected -->
+          <option value="Zuyd University" <%= user.university === 'Zuyd University' ? 'selected' : '' %>>Zuyd University</option>
+          <option value="Inteli - Instituto de Tecnologia e Liderança" <%= user.university === 'Inteli - Instituto de Tecnologia e Liderança' ? 'selected' : '' %>>Inteli - Instituto de Tecnologia e Liderança</option>
+          <option value="Belmont University" <%= user.university === 'Belmont University' ? 'selected' : '' %>>Belmont University</option>
+          <option value="H-BRS Germany" <%= user.university === 'H-BRS Germany' ? 'selected' : '' %>>H-BRS Germany</option>
+          <option value="Al Akhawayn University" <%= user.university === 'Al Akhawayn University' ? 'selected' : '' %>>Al Akhawayn University</option>
+          <option value="Ephec University College" <%= user.university === 'Ephec University College' ? 'selected' : '' %>>Ephec University College</option>
+          <option value="Heilongjiang International University" <%= user.university === 'Heilongjiang International University' ? 'selected' : '' %>>Heilongjiang International University</option>
+          <option value="Universidad Cesar Vallejo" <%= user.university === 'Universidad Cesar Vallejo' ? 'selected' : '' %>>Universidad Cesar Vallejo</option>
+          <option value="Manchester Metropolitan University" <%= user.university === 'Manchester Metropolitan University' ? 'selected' : '' %>>Manchester Metropolitan University</option>
+          <option value="Dunis University" <%= user.university === 'Dunis University' ? 'selected' : '' %>>Dunis University</option>
+          <option value="ESEG" <%= user.university === 'ESEG' ? 'selected' : '' %>>ESEG</option>
+      </select>       
+      </div>
+      <!-- Email Address -->
+      <div class="detail-item email-item">
+        <label>Email Address</label>
+        <input type="email" value="<%= user.email %>" disabled>
+      </div>
+      <!-- Instagram -->
+      <div class="detail-item">
+        <label>Instagram</label>
+        <input type="text" value="<%= user.instagram %>" disabled>
+      </div>
+      <!-- Facebook -->
+      <div class="detail-item">
+        <label>Facebook</label>
+        <input type="text" value="<%= user.facebook %>" disabled>
+      </div>
+      <!-- Twitter -->
+      <div class="detail-item">
+        <label>Twitter</label>
+        <input type="text" value="<%= user.twitter %>" disabled>
+      </div>
+    </div>
+    <div class="detail-button">
+      <button class="submit-btn" onclick="window.location.href='/my-profile';">Edit Profile</button>
+    </div>
+  </div>
+</body>
+</html>

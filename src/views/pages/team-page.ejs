@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Page</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Resetting default margin and font for better consistency */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Main content area, filling the available space and allowing scrolling */
+    .main-content {
+      flex: 1;
+      /* Takes up remaining space */
+      padding: 20px;
+      overflow-y: auto;
+      /* Enables vertical scrolling if content overflows */
+    }
+
+    /* Header styling */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      /* Spacing items apart */
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    /* Styling for the main heading */
+    .header h1 {
+      margin: 0;
+      /* Removing default margin */
+    }
+
+    /* Styling for the toggle status button */
+    #toggleStatusButton {
+      padding: 10px 20px;
+      background-color: #1E5A6F;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Grid layout for profile containers */
+    .profile-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      /* Two columns */
+      gap: 70px;
+      /* Spacing between columns */
+      max-width: 1000px;
+      /* Limiting maximum width */
+      margin-bottom: 20px;
+    }
+
+    /* Styling for individual profile cards */
+    .profile {
+      padding: 20px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 100%;
+      /* Fills the entire width of its container */
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Styling for profile headings and text */
+    .profile h3,
+    .profile p {
+      margin: 10px 0;
+    }
+
+    /* Styling for profile images */
+    .profile img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    /* Active dot indicator */
+    .active-dot {
+      height: 10px;
+      width: 10px;
+      background-color: #4CAF50;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    /* Styling for various sections */
+    .charts-container {
+      margin-left: 40px;
+      height: 250px;
+      width: 350px;
+    }
+
+    .evaluate-section,
+    .world-map {
+      margin-top: 20px;
+    }
+
+    /* Styling for images within various sections */
+    .evaluate-section img,
+    .world-map img {
+      display: block;
+      max-width: 100%;
+      /* Ensuring images don't exceed their container width */
+      height: auto;
+      /* Preserving aspect ratio */
+      margin-bottom: 10px;
+    }
+
+    /* Styling for evaluation section */
+    .evaluate-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #ccebf7;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    /* Styling for buttons within evaluation section */
+    .evaluate-section button {
+      padding: 10px 20px;
+      background-color: #0f4c75;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Styling for world map section */
+    .world-map {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Styling for the footer */
+    .footer {
+      background-color: #f1f1f1;
+      text-align: center;
+      padding: 10px;
+      margin-top: 20px;
+    }
+
+    /* Styling for footer logos */
+    .footer-logos img {
+      width: 50px;
+      margin: 0 10px;
+    }
+
+    /* Styling for footer links */
+    .footer a {
+      color: #0f4c75;
+      text-decoration: none;
+      display: block;
+      margin-top: 10px;
+    }
+
+    /* Styling for block profile container */
+    .block-profile-container {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    .widthX {
+      width: 390px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <!-- Main content area -->
+    <main class="main-content">
+      <!-- Header section with page title and status button -->
+      <div class="header">
+        <h1>Team Page</h1>
+        <div id="statusContainer">
+          <span id="status">
+            <%= req.session.user.status %>
+          </span>
+        </div>
+        <button id="toggleStatusButton">Change Status</button>
+      </div>
+      <!-- Container for profile cards and charts -->
+      <div class="block-profile-container">
+        <!-- Profile cards container -->
+        <div class="profile-container" id="profile-container"></div>
+        <!-- Charts container -->
+        <div class="widthX">
+          <canvas id="teamStrengthsCollaboration" class="charts-container"> </canvas>
+          <br>
+          <br>
+          <canvas id="teamStrengthsDecisionMaking" class="charts-container"></canvas>
+        </div>
+      </div>
+      <!-- Evaluate section with image and button -->
+      <div class="evaluate-section">
+        <img src="/images/Evaluation-Shortcut.png" alt="Evaluate your team">
+        <img src="/images/Evaluate-text.png" alt="Evaluate your team - TEXT">
+        <button type="button" onclick="location.href='/assessment/group-assessment-collaboration';">Click Here</button>
+      </div>
+      <!-- World map section -->
+      <div class="world-map">
+        <img src="/images/mapa.png" alt="World Map">
+      </div>
+    </main>
+  </div>
+
+  <!-- jQuery library -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    // Document ready function
+    $(document).ready(function () {
+      // Click event for toggle status button
+      $('#toggleStatusButton').click(function () {
+        const statusElement = document.getElementById('status');
+        const currentStatus = statusElement.textContent; // Capture current status
+        console.log('currentStatus:', currentStatus);
+        const newStatus = currentStatus === 'ONLINE' ? 'OFFLINE' : 'ONLINE';
+        console.log('newStatus', newStatus);
+
+        console.log('Status atual:', currentStatus);
+        console.log('Novo status:', newStatus);
+
+        // AJAX request to update status
+        $.ajax({
+          url: '/user/${userId}/status',
+          method: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify({ status: newStatus }),
+          success: function (response) {
+            $('#status').text(response.status.toUpperCase()); // Update displayed status
+            window.location.reload();
+          },
+          error: function (err) {
+            alert('Erro ao atualizar o status.');
+            console.error(err);
+          }
+        });
+      });
+    });
+
+    // DOMContentLoaded event to fetch and display team members
+    document.addEventListener('DOMContentLoaded', function () {
+      fetch('/findMembers', { method: 'GET' })
+        .then(response => response.json())
+        .then(data => {
+          const members = document.getElementById("profile-container");
+
+          data.forEach(user => {
+            // Create profile card for each user
+            let memberBox = document.createElement('div');
+            memberBox.classList.add('profile');
+
+            // Create and add the profile image element
+            let imgElement = document.createElement('img');
+            imgElement.src = user.profileImage || '/images/default-profile.jpg';
+            imgElement.alt = 'Profile Picture';
+            memberBox.appendChild(imgElement);
+
+            // Create and add the name element
+            let nameElement = document.createElement('h3');
+            nameElement.textContent = user.name;
+            memberBox.appendChild(nameElement);
+
+            // Create and add the active status indicator
+            let activeDot = document.createElement('span');
+            activeDot.classList.add('active-dot');
+            memberBox.appendChild(activeDot);
+
+            // Create and add the status text
+            let statusText = document.createElement('span');
+            statusText.textContent = user.status;
+            memberBox.appendChild(statusText);
+
+            // Create and add the role text
+            let collaborationStyle = document.createElement('p');
+            collaborationStyle.textContent = user.role;  // Assuming 'user.role' contains the desired information
+            memberBox.appendChild(collaborationStyle);
+
+            // Create and add the profile button
+            let profileButton = document.createElement('button');
+            profileButton.textContent = 'Profile';
+            profileButton.style.padding = '10px 15px'; /* Adjusted padding for larger button */
+            profileButton.style.backgroundColor = '#1E5A6F';
+            profileButton.style.color = 'white';
+            profileButton.style.border = 'none';
+            profileButton.style.borderRadius = '5px';
+            profileButton.style.cursor = 'pointer';
+            profileButton.addEventListener('click', function () {
+              window.location.href = `/other-profile?userId=${user.id}`;
+            });
+            memberBox.appendChild(profileButton);
+
+            // Add the profile card to the container
+            members.appendChild(memberBox);
+          });
+        });
+
+      // Graph of Collaboration
+      fetch('/team-page/teamStrengthsCollaboration', { method: 'GET' })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+
+          const typeSums = {
+            Director: 0,
+            Conformist: 0,
+            Harmonizer: 0,
+            Initiator: 0,
+            Analyst: 0
+          }
+
+          data.forEach(element => {
+            console.log('element', element);
+            if (element in typeSums) {
+              typeSums[element] += 1
+            }
+          })
+          const strength = Object.keys(typeSums);
+          console.log('strength', strength);
+          const scores = Object.values(typeSums);
+          console.log('scores', scores)
+
+          const ctx = document.getElementById('teamStrengthsCollaboration')
+          console.log(ctx)
+          myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: strength,
+              datasets: [{
+                label: 'Members Strengths Collaboration',
+                data: scores,
+                backgroundColor: 'rgba(30, 90, 111, 0.2)',
+                borderColor: 'rgba(30, 90, 111)',
+                borderWidth: 1.5,
+                pointBackgroundColor: 'rgb(255, 99, 132)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgb(255, 99, 132)'
+
+              }]
+            },
+            options: {
+              scales: {
+                y: {
+                  display: false,
+                  beginAtZero: true,
+                  max: 5,
+                  ticks: {
+                    stepSize: 1
+                  }
+                },  
+              }
+            }
+          });
+        });
+
+
+      // Graph of Decision Making
+      fetch('/team-page/teamStrengthsDecisionMaking', { method: 'GET' })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+
+          const typeSums = {
+            Analytical: 0,
+            Conceptual: 0,
+            Directive: 0,
+            Behavioral: 0
+          }
+
+          data.forEach(element => {
+            console.log('element', element);
+            if (element in typeSums) {
+              typeSums[element] += 1
+            }
+          })
+          const strength = Object.keys(typeSums);
+          const scores = Object.values(typeSums);
+          console.log('scores', scores)
+
+          const ctx = document.getElementById('teamStrengthsDecisionMaking')
+          console.log(ctx)
+          myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: strength,
+              datasets: [{
+                label: 'Members Strengths Decision Making',
+                data: scores,
+                backgroundColor: 'rgba(30, 90, 111, 0.2)',
+                borderColor: 'rgba(30, 90, 111)',
+                borderWidth: 1.5,
+                pointBackgroundColor: 'rgb(255, 99, 132)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgb(255, 99, 132)'
+
+              }]
+            },
+            options: {
+              scales: {
+                y: {
+                  display: false,
+                  beginAtZero: true,
+                  max: 5,
+                  ticks: {
+                    stepSize: 1
+                  }
+                },
+              }
+            }
+          });
+        });
+    });
+  </script>
+</body>
+
+</html>

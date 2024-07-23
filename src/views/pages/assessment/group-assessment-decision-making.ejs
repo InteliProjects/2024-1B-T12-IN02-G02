@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group Assessment Decision Making</title>
+  <style>
+    /* Basic page styling */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      flex-direction: column;
+      align-items: center;
+    }
+    /* Container styling for the decision making section */
+    .decision-container {
+      padding: 20px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    /* Heading styling */
+    h1 {
+      margin-top: 0;
+      font-size: 2em;
+      color: #333;
+    }
+    /* Paragraph styling */
+    p {
+      font-size: 1.1em;
+      color: #666;
+      text-align: center;
+      max-width: 600px;
+    }
+    /* Common styling for members and quadrants */
+    .decision-members, .decision-quadrant div {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    /* Members container styling */
+    .decision-members {
+      margin-bottom: 20px;
+      padding: 10px;
+      width: 100%;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+    /* Individual member styling */
+    .decision-member {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 10px;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      width: 80px;
+      height: 150px; /* Fixed height */
+      border: 2px solid transparent; /* Default border */
+      box-sizing: border-box; /* Include padding and border in width and height */
+    }
+    /* Member image styling */
+    .decision-member img {
+      border-radius: 50%;
+      width: 70px;
+      height: 70px;
+      cursor: pointer;
+    }
+    /* Member name styling */
+    .decision-member p {
+      margin: 10px 0 0;
+      font-size: 0.9em;
+      color: #333;
+      text-align: center;
+    }
+    /* Border colors for different members */
+    .decision-member[data-color="blue"] {
+      border-color: blue;
+    }
+    .decision-member[data-color="green"] {
+      border-color: green;
+    }
+    .decision-member[data-color="yellow"] {
+      border-color: yellow;
+    }
+    .decision-member[data-color="red"] {
+      border-color: red;
+    }
+    .decision-member[data-color="purple"] {
+      border-color: purple;
+    }
+    /* Graph container styling */
+    .decision-graph {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+    /* Quadrant container styling */
+    .decision-quadrant {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    /* Individual quadrant styling */
+    .decision-quadrant div {
+      flex: 1;
+      min-height: 150px;
+      margin: 10px;
+      border: 2px dashed #aaa;
+      border-radius: 8px;
+      background-color: #fff;
+      padding: 20px;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+    /* Hover effect for quadrants */
+    .decision-quadrant div:hover {
+      background-color: #f0f0f0;
+      border-color: #888;
+    }
+    /* Quadrant label styling */
+    .decision-quadrant div p {
+      width: 100%;
+      text-align: center;
+      margin: 0;
+      font-weight: bold;
+      color: #444;
+    }
+    /* Confirm button styling */
+    .confirm-button {
+      width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      color: #fff;
+      background-color: #1E5A6F;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    /* Hover effect for confirm button */
+    .confirm-button:hover {
+      background-color: #0f3d4d;
+    }
+    /* Responsive styling for quadrants */
+    @media (max-width: 768px) {
+      .decision-quadrant {
+        flex-direction: column;
+      }
+      .decision-quadrant div {
+        width: 100%;
+        margin: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Main container for the decision making section -->
+  <div class="decision-container" id="decision-container">
+    <h1>Group Assessment Decision Making</h1>
+    <p>Place your teammates in the graph where you believe their personality most relates to</p>
+
+    <!-- Container for draggable members -->
+    <div class="decision-members" id="decision-members"></div>
+  </div>
+
+  <!-- Container for the decision making quadrants -->
+  <div class="decision-graph">
+    <div class="decision-quadrant">
+      <div id="analytical" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <p>Analytical</p>
+      </div>
+      <div id="conceptual" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <p>Conceptual</p>
+      </div>
+    </div>
+    <div class="decision-quadrant">
+      <div id="directive" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <p>Directive</p>
+      </div>
+      <div id="behavioral" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <p>Behavioral</p>
+      </div>
+    </div>
+    <button class="confirm-button" onclick="confirmAssessment()">Confirm</button>
+
+  </div>
+
+  <!-- Button to confirm the assessment -->
+
+  <script>
+    let isDragging = false
+
+    // Allow drop action
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+
+    // Set data on drag start
+    function drag(event) {
+      event.dataTransfer.setData("text", event.target.id);
+    }
+
+    // Handle drop action
+    function drop(event) {
+      event.preventDefault();
+      const data = event.dataTransfer.getData("text");
+      const draggedElement = document.getElementById(data);
+      const target = event.target.closest('div');
+
+
+      // Allow drop only in quadrants or members area
+      if (target && (target.id === "analytical" || target.id === "conceptual" ||
+        target.id === "directive" || target.id === "behavioral" ||
+        target.classList.contains("decision-members"))) {
+        // Check if the dragged element is already inside the target
+        if (!target.contains(draggedElement)) {
+          target.appendChild(draggedElement);
+          draggedElement.style.width = '80px'; // Ensure constant width
+          draggedElement.style.height = '120px'; // Ensure constant height
+        }
+      }
+    }
+
+    // Function to confirm the assessment
+    function confirmAssessment() {
+      const analytical = getAssignedMembers('analytical');
+      const conceptual = getAssignedMembers('conceptual');
+      const directive = getAssignedMembers('directive');
+      const behavioral = getAssignedMembers('behavioral');
+
+      console.log('Analytical:', analytical);
+      console.log('Conceptual:', conceptual);
+      console.log('Directive:', directive);
+      console.log('Behavioral:', behavioral);
+
+      fetch('/group-assessment-decision-making', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          analytical: JSON.stringify(analytical),
+          conceptual: JSON.stringify(conceptual),
+          directive: JSON.stringify(directive),
+          behavioral: JSON.stringify(behavioral)
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        window.location.href = '/assessment/feedback-collaboration'
+      })
+      .catch(error => {
+        console.error('Erro ao enviar avaliação:', error);
+      });
+    }
+
+    function getAssignedMembers(categoryId) {
+      const category = document.getElementById(categoryId);
+      const members = category.getElementsByClassName('decision-member');
+      const assignedMembers = [];
+
+      for (let i = 0; i < members.length; i++) {
+        assignedMembers.push({
+          id: members[i].id.replace('member', '')
+        });
+      }
+
+      return assignedMembers;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      fetch('/findMembers', { method: 'GET' })
+        .then(response => response.json())
+        .then(data => {
+          const membersContainer = document.getElementById("decision-members");
+          const colors = ["blue", "green", "yellow", "red", "purple", "gray"];
+          let colorIndex = 0;
+
+          data.forEach(user => {
+            // Create individual member element
+            let decisionMemberDiv = document.createElement('div');
+            decisionMemberDiv.classList.add('decision-member');
+            decisionMemberDiv.id = `member${user.id}`;
+            decisionMemberDiv.draggable = true;
+            decisionMemberDiv.ondragstart = function (event) { drag(event); };
+            decisionMemberDiv.dataset.color = colors[colorIndex]; // Assign specific user color
+
+            // Create and add the image
+            let imgElement = document.createElement('img');
+            imgElement.src = user.profileImage || '/images/default-profile.jpg'; // Use the correct path
+            imgElement.alt = user.name;
+            decisionMemberDiv.appendChild(imgElement);
+
+            // Create and add the name
+            let nameElement = document.createElement('p');
+            nameElement.textContent = user.name;
+            decisionMemberDiv.appendChild(nameElement);
+
+            // Add individual member to main container
+            membersContainer.appendChild(decisionMemberDiv);
+
+            // Update color index
+            colorIndex = (colorIndex + 1) % colors.length;
+          });
+        })
+        .catch(error => {
+          console.log('Erro ao buscar membros:', error);
+        });
+    });
+
+    document.addEventListener('mousemove', function(event) {
+    // Pega a altura da janela
+    const windowHeight = window.innerHeight;
+
+    // Verifica se o mouse está na metade inferior da tela
+    if (event.clientY > windowHeight / 2 && isDragging == true) {
+        // Inicia a rolagem suave para baixo
+        window.scrollBy({
+            top: 10, // Você pode ajustar este valor para controlar a velocidade da rolagem
+            left: 0,
+            behavior: 'smooth'
+        });
+    } else {
+      console.log('isDragging', isDragging)
+    }
+});
+  </script>
+</body>
+</html>

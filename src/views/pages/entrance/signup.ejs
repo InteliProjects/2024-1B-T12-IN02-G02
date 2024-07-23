@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create New Account</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background: url('/images/heroIMG-login.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 25%;
+      height: 100%;
+      background-color: #1E5A6F;
+    }
+    .signup-container {
+      margin-right: 20px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+      padding-right: 5%;
+    }
+    .signup-box {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 5px;
+      box-shadow: -9px 9px 9px 4px rgba(0, 0, 0, 0.6);
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      min-height: 500px;
+      margin-bottom: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      z-index: 1;
+      transform: translateX(10%);
+      text-align: center;
+    }
+    .signup-box h1 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .signup-box .form-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    .signup-box .form-control {
+      padding-left: 35px;
+    }
+    .signup-box .form-group .icon {
+      position: absolute;
+      left: 10px;
+      top: 70%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+    }
+    .signup-box .btn-primary {
+      width: 38%;
+      padding: 0.9rem;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      background-color: #1E5A6F;
+      margin-bottom: 30px;
+    }
+    .signup-box .login-link {
+      display: block;
+      text-align: right;
+      margin-top: 1rem;
+      color: #000000;
+      font-size: 0.79rem;
+    }
+    .radio-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .link-login {
+      display: right;
+      margin-left: 130px;
+      text-decoration: underline;
+      color: #000000;
+    }
+    #icone-do-lock {
+      top: 70%;
+      width: 15px;
+      height: 20px;
+      margin-bottom: 10px;
+    }
+    .error-message {
+      display: none;
+      color: red;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="signup-container">
+    <div class="signup-box">
+      <h1>Create new Account</h1>
+      <form onsubmit="signup(event)">
+        <div class="form-group">
+          <label for="name"></label>
+          <img src="/images/person-icon.png" alt="Username Icon" class="icon">
+          <input type="text" class="form-control" id="username" name="name" placeholder="Username" required>
+        </div>
+        <div class="form-group">
+          <label for="email"></label>
+          <img src="/images/envelope-icon.png" alt="Email Icon" class="icon">
+          <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" required>
+        </div>
+        <div class="form-group">
+          <label for="password"></label>
+          <img src="/images/lock-icon.png" alt="Password Icon" class="icon" id="icone-do-lock">
+          <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+        </div>
+        <div class="form-group">
+          <label for="confirm-password"></label>
+          <img src="/images/shield-icon.png" alt="Confirm Password Icon" class="icon">
+          <input type="password" class="form-control" id="confirm-password" name="confirmPassword" placeholder="Confirm password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">SIGNUP</button>
+        <p id="errorMessage" class="error-message"></p>
+        <div class="login-link">
+          Already have an account? <a href="/" class="link-login">Login</a>
+        </div>        
+      </form>
+    </div>
+  </div>
+
+  <script>
+    async function signup(event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      const errorMessage = document.getElementById('errorMessage');
+
+      if (password !== confirmPassword) {
+        errorMessage.textContent = 'Passwords do not match';
+        errorMessage.style.display = 'block';
+      } else {
+        errorMessage.style.display = 'none';
+
+        try {
+          const response = await fetch('/signup', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name: username, email, password, confirmPassword })
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // Redireciona o usuário para a URL retornada pelo servidor
+            window.location.href = data.redirectUrl;
+          } else {
+            errorMessage.textContent = data.error || 'Error during signup';
+            errorMessage.style.display = 'block';
+          }
+        } catch (error) {
+          console.error('Error during signup:', error);
+          errorMessage.textContent = 'Error during signup';
+          errorMessage.style.display = 'block';
+        }
+      }
+    }
+  </script>
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

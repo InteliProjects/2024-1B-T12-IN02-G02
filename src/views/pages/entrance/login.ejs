@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      /* Define the background image and its properties */
+      background: url('/images/heroIMG-login.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .overlay {
+      /* Create a solid overlay on the right side */
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 25%;
+      height: 100%;
+      background-color: #1E5A6F;
+      /* Dark blue color */
+    }
+
+    .login-container {
+      /* Flexbox container for centering the login box */
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+      padding-right: 5%;
+    }
+
+    .login-box {
+      /* Style for the login box */
+      background-color: white;
+      padding: 2rem;
+      border-radius: 5px;
+      box-shadow: -9px 9px 9px 4px rgba(0, 0, 0, 0.6);
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      /* Adjust height as needed */
+      min-height: 500px;
+      /* Ensure minimum height */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      z-index: 1;
+      /* Ensure it stays above the overlay */
+      transform: translateX(10%);
+      text-align: center;
+    }
+
+    .login-box h1 {
+      /* Style for the header */
+      font-size: 2rem;
+      margin-bottom: 4.2rem;
+      text-align: center;
+    }
+
+    .login-box .form-group {
+      /* Style for the form groups */
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .login-box .form-group .email-icon,
+    .login-box .form-group .password-icon {
+      /* Style for the icons */
+      position: absolute;
+      left: 10px;
+      width: 20px;
+      /* Adjust the size as needed */
+      height: 20px;
+      /* Adjust the size as needed */
+      top: 70%;
+      transform: translateY(-50%);
+    }
+
+    .login-box .form-group .password-icon {
+      top: 45%;
+      /* Adjust the position for password icon */
+      width: 15px
+    }
+
+    .login-box .form-control {
+      /* Add padding to the form control to avoid overlap with icons */
+      padding-left: 35px;
+    }
+
+    .login-box .btn-primary {
+      /* Style for the primary button */
+      width: 38%;
+      padding: 0.9rem;
+      /* Adjust padding */
+      font-size: 1.1rem;
+      /* Adjust font size */
+      border-radius: 30px;
+      /* Make button rounded */
+      background-color: #1E5A6F;
+      margin-bottom: 30px;
+    }
+
+    .login-box .forgot-password,
+    .login-box .signup {
+      /* Style for the links */
+      display: block;
+      text-align: right;
+      margin-top: 0rem;
+      color: #000000;
+      text-decoration: underline;
+      font-size: 0.79rem;
+    }
+
+    .text {
+      /* Style for the text at the bottom */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1rem;
+      color: #000000;
+      font-size: 0.79rem;
+    }
+
+    .text a {
+      /* Adjust the margin for the link */
+      margin-left: 160px;
+    }
+
+    .password-icon {
+      margin-top: 11px;
+    }
+
+    #errorMessage {
+      display: none;
+      color: red;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- Overlay section on the right -->
+  <div class="overlay"></div>
+  <!-- Container for the login form -->
+  <div class="login-container">
+    <div class="login-box">
+      <!-- Login form heading -->
+      <h1>SIGN IN</h1>
+      <!-- Form for login -->
+      <form onsubmit="login(event)">
+        <!-- Form group for email input -->
+        <div class="form-group">
+          <label for="email"></label>
+          <!-- Icon for email -->
+          <img src="/images/envelope-icon.png" alt="Email Icon" class="email-icon">
+          <!-- Email input field -->
+          <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" required>
+        </div>
+        <!-- Form group for password input -->
+        <div class="form-group">
+          <label for="password"></label>
+          <!-- Icon for password -->
+          <img src="/images/lock-icon.png" alt="Password Icon" class="password-icon">
+          <!-- Password input field -->
+          <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+          <!-- Forgot password link -->
+        </div>
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary">LOGIN</button>
+        <!-- Text and link for sign up -->
+        <div>
+          <a id="errorMessage">Email or password invalid</a>
+        </div>
+        <div class="text">
+          Don't have an account? <a href="/signup" class="signup">Signup</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    async function login(event) {
+
+      event.preventDefault()
+      const email = document.getElementById('email').value 
+      const password = document.getElementById('password').value
+      const errorMessage = document.getElementById('errorMessage');
+
+      try {
+        const res = await fetch('/login',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              email: email,
+              password: password
+            })
+
+          })
+
+          const data = await res.json()
+          console.log(data)
+
+        if (res.ok) {
+          console.log('res.ok')
+          window.location.href = '/welcome'
+        }
+        else if (!res.ok) {
+          console.log('!res.ok')
+          errorMessage.style.display = 'block'
+        }
+
+      } catch (error) {
+        console.error('Error during signup:', error);
+        errorMessage.textContent = 'Error during signup';
+        errorMessage.style.display = 'block';
+      }
+    }
+  </script>
+  <!-- JS scripts for Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

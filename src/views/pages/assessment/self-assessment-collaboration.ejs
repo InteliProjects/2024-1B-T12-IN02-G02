@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <!-- Define characters that will be used and viewport for responsiveness -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title of the webpage -->
+    <title>Self-assessment Collaboration</title>
+    <!-- Link to external CSS file for additional styling -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Tag to use CSS -->
+    <style>
+        /* General body styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F4F4F4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+        }
+        /* Styling for the main container box, including shadow and responsive width */
+        .shadowBox {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #fff;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow-y: auto;
+            margin: auto;    
+        }
+        /* Styling for paragraphs to center text and set color */
+        p {
+            text-align: center;
+            color: #555;
+        }
+        /* Margin and block display styles for sections and labels within the form */
+        .section {
+            margin-bottom: 20px;
+        }
+        .section label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        /* Style for checkbox input */
+        .section input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        /* Styling for the submit button */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #28A745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+        }
+        /* Centered top navigation buttons with styling for hover effect */
+        .top-buttons {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .top-buttons button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #fff;
+            color: #000;
+            border: 2px solid #000;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .top-buttons button:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main container with a shadow effect for styling -->
+<div class="shadowBox">
+    <!-- Main title for the assessment form -->
+    <h1>Collaboration Self Assessment</h1>
+
+    <!-- Container for navigation buttons -->
+    <div class="top-buttons">
+        <!-- Button to navigate to the self-assessment collaboration page -->
+        <button onclick="location.href='/assessment/self-assessment-collaboration'" disabled>Self-assessment Collaboration</button>
+        <!-- Button to navigate to the self-assessment decision-making page -->
+        <button onclick="location.href='/assessment/self-assessment-decision-making'">Self-assessment Decision Making</button>
+    </div>
+
+    <!-- Form for submitting collaboration self-assessment, method POST -->
+    <form action="/self-assessment-collaboration" method="POST">
+        <!-- Each section contains a question with multiple choice answers -->
+        <div class="section">
+            <h2>1. What do you care most about when working in a group setting?</h2>
+            <!-- Options for the first question (radio buttons to select one) -->
+            <label><input type="radio" name="question1" value="A" required>A. Getting things done effectively without delay and seeing results right away</label>
+            <label><input type="radio" name="question1" value="B" required>B. Getting things done by ‘the book’ and follow protocols</label>
+            <label><input type="radio" name="question1" value="C" required>C. Having democracy in a team and keeping the group harmony</label>
+            <label><input type="radio" name="question1" value="D" required>D. Exploring new possibilities in untapped opportunities and embracing creativity.</label>
+            <label><input type="radio" name="question1" value="E" required>E. Attention to detail to get things right and downtime to think independently</label>
+        </div>
+        
+        <!-- Second question with options -->
+        <div class="section">
+            <h2>2. Which of the options describe you best?</h2>
+            <label><input type="radio" name="question2" value="A" required>A. I like to take the lead so things will be done the way I want</label>
+            <label><input type="radio" name="question2" value="B" required>B. I like to follow the accepted procedure in order to avoid a conflict.</label>
+            <label><input type="radio" name="question2" value="C" required>C. I can become a bit assertive, when it comes to stating an opinion.</label>
+            <label><input type="radio" name="question2" value="D" required>D. I seek to cultivate my relationships with co-workers.</label>
+            <label><input type="radio" name="question2" value="E" required>E. I am very adept at creating new knowledge and decision-making comes easy for me.</label>
+        </div>
+
+        <!-- Third question with options -->
+        <div class="section">
+            <h2>3. How would you describe your collaboration behavior?</h2>
+            <label><input type="radio" name="question3" value="A" required>A. I do not mind to discuss options, but in the end I want to decide.</label>
+            <label><input type="radio" name="question3" value="B" required>B. I tend to be cooperative and nice within my immediate team.</label>
+            <label><input type="radio" name="question3" value="C" required>C. I prefer independent work to discover one, provable answer and if I need some external consultation I will choose a master of his/her field.</label>
+            <label><input type="radio" name="question3" value="D" required>D. I seek for consensus and good cooperation with my teammates.</label>
+            <label><input type="radio" name="question3" value="E" required>E. I look for facts and data, and decisions to be logical.</label>
+        </div>
+
+        <!-- Fourth question with options -->
+        <div class="section">
+            <h2>4. What sort of things are you most motivated by in a team environment?</h2>
+            <label><input type="radio" name="question4" value="A" required>A. Winning, excelling past the competition, and achieving success</label>
+            <label><input type="radio" name="question4" value="B" required>B. Finding a consensus and follow the decisions taken.</label>
+            <label><input type="radio" name="question4" value="C" required>C. Cooperating well and receiving sincere appreciation from others</label>
+            <label><input type="radio" name="question4" value="D" required>D. Novel experiences, interesting tasks, and positive social recognition</label>
+            <label><input type="radio" name="question4" value="E" required>E. Demonstrating my expertise and gaining knowledge in my area of interest</label>
+        </div>
+
+        <!-- Fifth question with options -->
+        <div class="section">
+            <h2>5. When you approach discussions during team meetings, you tend to:</h2>
+            <label><input type="radio" name="question5" value="A" required>A. Direct and decisive — I say what’s on my mind with no hesitation</label>
+            <label><input type="radio" name="question5" value="B" required>B. Agree and conform – I will follow the decision taken by the majority</label>
+            <label><input type="radio" name="question5" value="C" required>C. Patient and cooperate — I let others go first and chime in when appropriate</label>
+            <label><input type="radio" name="question5" value="D" required>D. Lively and energetic — I’m enthusiastic and animated when it comes to sharing ideas</label>
+            <label><input type="radio" name="question5" value="E" required>E. Thoughtful and systematic — I make sure every contribution adds value to the conversation</label>
+        </div>
+
+        <!-- Sixth question with options -->
+        <div class="section">
+            <h2>6. The project your team is working on keeps getting delayed, what’s the one factor you refuse to compromise on?</h2>
+            <label><input type="radio" name="question6" value="A" required>A. The results — project milestones need to be hit on time and on budget going forward</label>
+            <label><input type="radio" name="question6" value="B" required>B. The consensus – we most important thing is that all agree on the process</label>
+            <label><input type="radio" name="question6" value="C" required>C. The people—the relationships of those formed in the group takes precedence over the job itself</label>
+            <label><input type="radio" name="question6" value="D" required>D. The ideas — goals are lofty but you intend to see them through without downgrading the vision</label>
+            <label><input type="radio" name="question6" value="E" required>E. The precision — it doesn’t matter how quick or how much is done, quality is everything.</label>
+        </div>
+        <!-- Submit button to send the form data -->
+        <button type="submit" class="submit-btn">Send</button>
+    </form>
+</div>

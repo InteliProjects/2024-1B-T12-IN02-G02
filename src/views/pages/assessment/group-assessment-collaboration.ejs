@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Avaliação Colaborativa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .mini-title {
+            font-weight: bold;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: left;
+        }
+
+        .explanation {
+            font-weight: bold;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: left;
+            margin-right: 3.5cm;
+        }
+
+        .command {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: left;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .participants {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .participant-card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 30%;
+            height: 210px;
+            ;
+            margin-bottom: 20px;
+            padding: 10px;
+            text-align: center;
+            border-radius: 35px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .participant-card img {
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .participant-card select {
+            width: 50%;
+            display: block;
+            margin: 0 auto;
+            margin-top: 30px;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .navigation-buttons-start {
+            display: flex;
+            margin-left: 26.9cm;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .navigation-buttons button {
+            padding: 10px 20px;
+        }
+
+        @media (max-width: 768px) {
+            .participant-card {
+                width: 48%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .participant-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-content">
+        <div id="step1" class="step active">
+            <h1 class="mini-title">Director</h1>
+            <p class="explanation">Is often seen as the leader and decision maker and the one who often initiates
+                discussions. Select the
+                level from 1 to 5, that this characteristic relates to this player`s personality</p><br>
+            <p class="command">Select respectivly how much you agree with the personality of your teammates being
+                similar to the description above.</p>
+            <div class="participants" id="participants-step1">
+                <!-- display members -->
+            </div>
+            <div class="navigation-buttons-start">
+                <img onclick="goToStep(2)" style="width: 100px; height: 75px;" src="/images/imgSetaD.png"
+                    alt="Imagem de seta pra direita">
+            </div>
+        </div>
+        <div id="step2" class="step">
+            <h1 class="mini-title">Conformist</h1>
+            <p class="explanation">Tend to be quite cooperative working within immediate team, but you seem to be less
+                cooperative in the
+                bigger team environment. Select the level from 1 to 5, that this characteristic relates to this player’s
+                personality</p><br>
+            <p class="command">Select respectivly how much you agree with the personality of your teammates being
+                similar to the description above.</p>
+            <div class="participants" id="participants-step2">
+                <!-- display participants -->
+            </div>
+            <div class="navigation-buttons">
+                <img onclick="goToStep(1)" style="width: 100px; height: 75px;" src="/images/imgSetaE.png"
+                    alt="Imagem de seta pra esquerda">
+                <img onclick="goToStep(3)" style="width: 100px; height: 75px;" src="/images/imgSetaD.png"
+                    alt="Imagem de seta pra direita">
+            </div>
+        </div>
+        <div id="step3" class="step">
+            <h1 class="mini-title">Harmonizer</h1>
+            <p class="explanation">Is a people-person and the glue that keeps everyone together. You’re known for
+                building great
+                relationships and facilitating team interactions with grace and humility. Select the level from 1 to 5,
+                that this characteristic relates to this player’s personality</p><br>
+            <p class="command">Select respectivly how much you agree with the personality of your teammates being
+                similar to the description above.</p>
+            <div class="participants" id="participants-step3">
+                <!-- display participants -->
+            </div>
+            <div class="navigation-buttons">
+                <img onclick="goToStep(2)" style="width: 100px; height: 75px;" src="/images/imgSetaE.png"
+                    alt="Imagem de seta pra esquerda">
+                <img onclick="goToStep(4)" style="width: 100px; height: 75px;" src="/images/imgSetaD.png"
+                    alt="Imagem de seta pra direita">
+            </div>
+        </div>
+        <div id="step4" class="step">
+            <h1 class="mini-title">Initiator</h1>
+            <p class="explanation">Known for often coming up with great ideas and opening up the discussion so everyone
+                can explore new
+                territory together. Select the level from 1 to 5, that this characteristic relates to this player’s
+                personality</p><br>
+            <p class="command">Select respectivly how much you agree with the personality of your teammates being
+                similar to the description above.</p>
+            <div class="participants" id="participants-step4">
+                <!-- display participants -->
+            </div>
+            <div class="navigation-buttons">
+                <img onclick="goToStep(3)" style="width: 100px; height: 75px;" src="/images/imgSetaE.png"
+                    alt="Imagem de seta pra esquerda">
+                <img onclick="goToStep(5)" style="width: 100px; height: 75px;" src="/images/imgSetaD.png"
+                    alt="Imagem de seta pra direita">
+            </div>
+        </div>
+        <div id="step5" class="step">
+            <h1 class="mini-title">Analyst</h1>
+            <p class="explanation">Known for being extremely analytical and prefer to deal with work linearly in
+                sequential order, finishing
+                one thing before starting another. Select the level from 1 to 5, that this characteristic relates to
+                this player’s personality</p><br>
+            <p class="command">Select respectivly how much you agree with the personality of your teammates being
+                similar to the description above.</p>
+            <div class="participants" id="participants-step5">
+                <!-- display participant -->
+            </div>
+            <div class="navigation-buttons">
+                <img onclick="goToStep(4)" style="width: 100px; height: 75px;" src="/images/imgSetaE.png"
+                    alt="Imagem de seta pra esquerda">
+                <button type="button" onclick="submitEvaluations()"
+                    style="border-radius: 5px; background-color: #006d77; color: #ffffff;">Submit</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let currentStep = 1;
+
+        function goToStep(stepNumber) {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach(step => step.classList.remove('active'));
+            document.getElementById('step' + stepNumber).classList.add('active');
+            currentStep = stepNumber;
+            populateMembers('participants-step' + stepNumber);
+        }
+
+        function populateMembers(containerId) {
+            fetch('/findMembers', { method: 'GET' })
+                .then(response => response.json())
+                .then(data => {
+                    const membersContainer = document.getElementById(containerId);
+                    membersContainer.innerHTML = ''; // Clear previous members
+
+                    data.forEach(user => {
+                        // Create participant card
+                        let participantCard = document.createElement('div');
+                        participantCard.classList.add('participant-card');
+
+                        // Add name
+                        let nameElement = document.createElement('h3');
+                        nameElement.textContent = user.name;
+                        participantCard.appendChild(nameElement);
+
+                        // Add image
+                        let imgElement = document.createElement('img');
+                        imgElement.src = user.profileImage || '/images/default-profile.jpg'; // Use the correct path
+                        imgElement.alt = user.name;
+                        participantCard.appendChild(imgElement);
+
+                        // Add select
+                        let selectElement = document.createElement('select');
+                        selectElement.name = `rating-${user.id}`; // Create a unique name for each select
+                        for (let i = 1; i <= 5; i++) {
+                            let option = document.createElement('option');
+                            option.value = i;
+                            option.textContent = i;
+                            selectElement.appendChild(option);
+                        }
+                        participantCard.appendChild(selectElement);
+
+                        // Append card to container
+                        membersContainer.appendChild(participantCard);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching members:', error);
+                });
+        }
+
+        // Submit the evaluation
+        function submitEvaluations() {
+            const evaluations = [];
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((step, index) => {
+                const type = step.querySelector('h1.mini-title').innerText.toLowerCase();
+                const selects = step.querySelectorAll('select');
+                selects.forEach(select => {
+                    const to_id_user = select.name.split('-')[1];
+                    const answer = select.value;
+                    evaluations.push({ to_id_user, type, answer });
+                });
+            });
+
+            fetch('/group-assessment-collaboration', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ evaluations }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Evaluations submitted:', data);
+                    window.location.href = '/assessment/group-assessment-decision-making'
+                })
+                .catch(error => {
+                    console.error('Error submitting evaluations:', error);
+                    alert('Error submitting evaluations');
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            populateMembers('participants-step1');
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            populateMembers('participants-step1');
+        });
+    </script>
+
+</body>
+
+</html>

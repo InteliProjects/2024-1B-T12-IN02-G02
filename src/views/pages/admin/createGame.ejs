@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Game</title>
+  <style>
+form {
+  background: white;
+  padding: 50px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%; 
+}
+
+input[type="text"],
+input[type="datetime-local"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+  </style>
+</head>
+<body>
+  <h1>Create a New Game</h1>
+  
+  <!-- Form to create a new game -->
+  <form action="/admin/createGame" method="post">
+    <!-- Input field for entering the game name -->
+    <input type="text" name="name" placeholder="Game Name" required><br>
+    
+    <!-- Input field for entering the start date of the game -->
+    <input type="datetime-local" name="startDate" placeholder="Start Date" required><br>
+    
+    <!-- Input field for entering the end date of the game -->
+    <input type="datetime-local" name="endDate" placeholder="End Date" required><br>
+    
+    <!-- Submit button to create the game -->
+    <button type="submit">Create Game</button>
+  </form>
+</body>
+</html>

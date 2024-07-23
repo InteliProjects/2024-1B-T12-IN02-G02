@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Teams</title>
+    <style>
+
+
+        form {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            width: 900;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        select[multiple] {
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Create a New Team</h1>
+
+    <!-- Form to create a new team -->
+    <form action="/admin/createTeam" method="POST">
+        <label for="color">Team Color:</label>
+        <select name="color" id="color">
+            <option value="Yellow">Yellow</option>
+            <option value="Green">Green</option>
+            <option value="Blue">Blue</option>
+            <option value="Red">Red</option>
+        </select>
+
+        <label for="universeId">Universe:</label>
+        <select name="universeId" id="universeId">
+            <!-- Options for universes will be filled dynamically -->
+        </select>
+
+        <label for="members">Select Members:</label>
+        <select name="members[]" id="members" multiple>
+            <!-- Options for users will be filled dynamically -->
+        </select>
+
+        <button type="submit">Create Team</button>
+    </form>
+
+    <!-- Form to update team members -->
+    <form action="/updateTeam" method="POST">
+        <h2>Update team members</h2>
+        <label for="team">Select a team:</label>
+        <select name="teamId" id="team">
+            <!-- Options for teams will be filled dynamically -->
+        </select>
+
+        <label for="membersUpdate">New members to add:</label>
+        <select name="newMembers[]" id="membersUpdate" multiple>
+            <!-- Options for users will be filled dynamically -->
+        </select>
+
+        <button type="submit" onclick="alertMessage()">Update Members</button>
+    </form>
+
+    <!-- JavaScript for fetching dynamic data -->
+    <script>
+        // Wait for the DOM content to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch list of universes and populate the select dropdown
+            fetch('/listUniverse').then(response => response.json()).then(data => {
+                const universeSelect = document.getElementById('universeId');
+                data.forEach(universe => {
+                    let option = new Option(universe.number, universe.id);
+                    option.text = universe.number;
+                    universeSelect.appendChild(option);
+                });
+            });
+
+            // Fetch list of users for creating a team and populate the select dropdown
+            fetch('/listUser').then(response => response.json()).then(data => {
+                const membersSelect = document.getElementById('members');
+                data.forEach(user => {
+                    let option = new Option(user.name, user.id);
+                    option.text = user.name;
+                    membersSelect.appendChild(option);
+                });
+            });
+
+            // Fetch list of users for updating a team and populate the select dropdown
+            fetch('/listUser').then(response => response.json()).then(data => {
+                const membersSelect = document.getElementById('membersUpdate');
+                data.forEach(user => {
+                    let option = new Option(user.name, user.id);
+                    option.text = user.name;
+                    membersSelect.appendChild(option);
+                });
+            });
+
+            // Fetch list of teams and populate the select dropdown for updating team members
+            fetch('/listTeam').then(response => response.json()).then(data => {
+                const teamSelect = document.getElementById('team');
+                data.forEach(team => {
+                    let option = new Option(team.name, team.id);
+                    option.text = team.name;
+                    option.value = team.id;
+                    teamSelect.appendChild(option);
+                });
+            });
+        });
+
+        // Function to display an alert message when updating team members
+        function alertMessage() {
+            alert('Try to update');
+        }
+    </script>
+</body>
+</html>

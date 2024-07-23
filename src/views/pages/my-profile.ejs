@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    /* Global styles for the page */
+    body { 
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+
+    /* Container for the profile section */
+    .profile-container { 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
+        background-color: white;
+        margin-top: 40px; 
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .h1 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin-left: 315px;
+      margin-top: 70px;
+    }
+    /* Header section containing profile picture and status */
+    .profile-header { 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    /* Profile picture styling */
+    .profile-pic {
+        align-items: baseline;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    /* Camera icon positioning and styling */
+    .camera-icon {
+        position: absolute;
+        bottom: 23px;
+        right: 8px;
+        background-color: white;
+        border-radius: 50%;
+        padding: 5px;
+    }
+
+    /* Status section styling */
+    .status {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    /* Green dot indicating active status */
+    .status-dot {
+        width: 10px;
+        height: 10px;
+        background-color: green;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+
+    /* Grid layout for profile details */
+    .profile-details {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px 20px;
+        margin-top: 20px;
+    }
+
+    /* Styling for each detail item */
+    .detail-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Styling for each detail item */
+    .detail-button {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 20px;
+    }
+
+    /* Label styling */
+    .detail-item label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    /* Input field styling */
+    .detail-item input,
+    .detail-item select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        font-size: 14px;
+    }
+
+    /* Styling for disabled input fields */
+    .detail-item input[disabled] {
+        color: #555;
+    }
+
+    /* Email item spans 2 columns */
+    .email-item {
+        grid-column: span 2;
+    }
+
+    /* Submit button styling */
+    .submit-btn {
+        padding: 12px 72px;
+        background-color: #1E5A6F;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .submit-btn:hover {
+        background-color: #174a5b;
+    }
+
+    </style>
+    <title>My Profile</title>
+</head>
+<body>
+    
+    <div class="profile-container">
+          <div class="h1">
+            <h1>My Profile</h1>
+          </div>
+        <!-- Profile header with image, camera icon, and status -->
+        <div class="profile-header">
+            <img src="<%= user.profileImage || '/images/default-profile.jpg' %>" alt="Profile Picture" class="profile-pic">
+            <div class="camera-icon">
+                <img src="/images/camera-icon.png" width="25px" alt="Camera Icon">
+            </div>
+            <div class="status">
+                <span class="status-dot"></span> Active
+            </div>
+        </div>
+        
+        <!-- Form to submit profile updates -->
+        <form action="/update-profile" method="POST" enctype="multipart/form-data">
+            <div class="profile-details">
+                <!-- Input field for choosing a profile picture -->
+                <div class="detail-item">
+                    <label for="profileImage">Choose a profile picture:</label>
+                    <input type="file" id="profileImage" name="profileImage" accept="image/*">
+                </div>
+                <!-- Input field for first name -->
+                <div class="detail-item">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" value="<%= user.name %>" disabled >
+                </div>
+                <div class="detail-item">
+                  <!-- Dropdown for selecting pronouns -->
+                  <label for="pronouns">Pronouns:</label>
+                  <select id="pronouns" name="pronouns">
+                      <option value="">Select your pronouns</option>
+                      <option value="he/him" <%= user.pronouns === 'he/him' ? 'selected' : '' %>>he/him</option>
+                      <option value="she/her" <%= user.pronouns === 'she/her' ? 'selected' : '' %>>she/her</option>
+                      <option value="they/them" <%= user.pronouns === 'they/them' ? 'selected' : '' %>>they/them</option>
+                      <option value="other" <%= user.pronouns === 'other' ? 'selected' : '' %>>other</option>
+                  </select><br>
+                </div>
+                <!-- Input field for email -->
+                <div class="detail-item email-item">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" value="<%= user.email %>" disabled>
+                </div>
+                <!-- Dropdown for selecting first language -->
+                <div class="detail-item">
+                    <label for="firstLanguage">First Language:</label>
+                    <input type="text" id="firstLanguage" name="firstLanguage" placeholder="Enter your first language" value="<%= user.firstLanguage %>">
+                </div>
+                <!-- Dropdown for selecting gender -->
+                <div class="detail-item">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="gender">
+                      <option value="">Select a gender</option>
+                      <option value="Male" <%= user.gender === 'Male' ? 'selected' : '' %>>Male</option>
+                      <option value="Female" <%= user.gender === 'Female' ? 'selected' : '' %>>Female</option>
+                      <option value="Non-binary" <%= user.gender === 'Non-binary' ? 'selected' : '' %>>Non-binary</option>
+                      <option value="Rather-not-say" <%= user.gender === 'Rather-not-say' ? 'selected' : '' %>>Rather not say</option>
+                  </select><br>
+                </div>
+                <!-- Input field for birthday -->
+                <div class="detail-item">
+                    <label for="birthdate">Birthday:</label>
+                    <input type="date" id="birthdate" name="birthdate" value="<%= user.birthdate ? user.birthdate : '' %>">
+                </div>
+                <!-- Dropdown for selecting country -->
+                <div class="detail-item">
+                    <label for="country">Country:</label>
+                    <select id="country" name="country">
+                      <option value="">Select a country</option>
+                      <option value="Netherlands" <%= user.country === 'Netherlands' ? 'selected' : '' %>>Netherlands</option>
+                      <option value="Brazil" <%= user.country === 'Brazil' ? 'selected' : '' %>>Brazil</option>
+                      <option value="USA" <%= user.country === 'USA' ? 'selected' : '' %>>USA</option>
+                      <option value="Germany" <%= user.country === 'Germany' ? 'selected' : '' %>>Germany</option>
+                      <option value="Morocco" <%= user.country === 'Morocco' ? 'selected' : '' %>>Morocco</option>
+                      <option value="Belgium" <%= user.country === 'Belgium' ? 'selected' : '' %>>Belgium</option>
+                      <option value="China" <%= user.country === 'China' ? 'selected' : '' %>>China</option>
+                      <option value="Peru" <%= user.country === 'Peru' ? 'selected' : '' %>>Peru</option>
+                      <option value="UK" <%= user.country === 'UK' ? 'selected' : '' %>>United Kingdom</option>
+                      <option value="Senegal" <%= user.country === 'Senegal' ? 'selected' : '' %>>Senegal</option>
+                  </select><br>
+                </div>
+                <!-- Dropdown for selecting university -->
+                <div class="detail-item">
+                    <label for="university">University:</label>
+                    <select id="university" name="university">
+                      <option value="">Select a university</option> <!-- Default option shown if no university is selected -->
+                      <option value="Zuyd University" <%= user.university === 'Zuyd University' ? 'selected' : '' %>>Zuyd University</option>
+                      <option value="Inteli - Instituto de Tecnologia e Liderança" <%= user.university === 'Inteli - Instituto de Tecnologia e Liderança' ? 'selected' : '' %>>Inteli - Instituto de Tecnologia e Liderança</option>
+                      <option value="Belmont University" <%= user.university === 'Belmont University' ? 'selected' : '' %>>Belmont University</option>
+                      <option value="H-BRS Germany" <%= user.university === 'H-BRS Germany' ? 'selected' : '' %>>H-BRS Germany</option>
+                      <option value="Al Akhawayn University" <%= user.university === 'Al Akhawayn University' ? 'selected' : '' %>>Al Akhawayn University</option>
+                      <option value="Ephec University College" <%= user.university === 'Ephec University College' ? 'selected' : '' %>>Ephec University College</option>
+                      <option value="Heilongjiang International University" <%= user.university === 'Heilongjiang International University' ? 'selected' : '' %>>Heilongjiang International University</option>
+                      <option value="Universidad Cesar Vallejo" <%= user.university === 'Universidad Cesar Vallejo' ? 'selected' : '' %>>Universidad Cesar Vallejo</option>
+                      <option value="Manchester Metropolitan University" <%= user.university === 'Manchester Metropolitan University' ? 'selected' : '' %>>Manchester Metropolitan University</option>
+                      <option value="Dunis University" <%= user.university === 'Dunis University' ? 'selected' : '' %>>Dunis University</option>
+                      <option value="ESEG" <%= user.university === 'ESEG' ? 'selected' : '' %>>ESEG</option>
+                  </select>                  
+                </div>
+                <!-- Input field for phone number -->
+                <div class="detail-item">
+                  <label for="phone">Phone Number:</label>
+                  <input type="tel" id="phone" name="phone" value="<%= user.phone ? user.phone : '' %>" placeholder="Enter your phone number">
+                </div>
+                <div class="detail-item">
+                    <label for="timeZone">Timezone:</label>
+                    <select id="timeZone" name="timeZone">
+                        <option value="">Select a timezone</option> <!-- Default option shown if no timezone is selected -->
+                        <option value="-12:00" <%= user.timeZone === '-12:00' ? 'selected' : '' %>>(GMT -12:00) Eniwetok, Kwajalein</option>
+                        <option value="-11:00" <%= user.timeZone === '-11:00' ? 'selected' : '' %>>(GMT -11:00) Midway Island, Samoa</option>
+                        <option value="-10:00" <%= user.timeZone === '-10:00' ? 'selected' : '' %>>(GMT -10:00) Hawaii</option>
+                        <option value="-09:50" <%= user.timeZone === '-09:50' ? 'selected' : '' %>>(GMT -9:30) Taiohae</option>
+                        <option value="-09:00" <%= user.timeZone === '-09:00' ? 'selected' : '' %>>(GMT -9:00) Alaska</option>
+                        <option value="-08:00" <%= user.timeZone === '-08:00' ? 'selected' : '' %>>(GMT -8:00) Pacific Time (US & Canada)</option>
+                        <option value="-07:00" <%= user.timeZone === '-07:00' ? 'selected' : '' %>>(GMT -7:00) Mountain Time (US & Canada)</option>
+                        <option value="-06:00" <%= user.timeZone === '-06:00' ? 'selected' : '' %>>(GMT -6:00) Central Time (US & Canada), Mexico City</option>
+                        <option value="-05:00" <%= user.timeZone === '-05:00' ? 'selected' : '' %>>(GMT -5:00) Eastern Time (US & Canada), Bogota, Lima</option>
+                        <option value="-04:50" <%= user.timeZone === '-04:50' ? 'selected' : '' %>>(GMT -4:30) Caracas</option>
+                        <option value="-04:00" <%= user.timeZone === '-04:00' ? 'selected' : '' %>>(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz</option>
+                        <option value="-03:50" <%= user.timeZone === '-03:50' ? 'selected' : '' %>>(GMT -3:30) Newfoundland</option>
+                        <option value="-03:00" <%= user.timeZone === '-03:00' ? 'selected' : '' %>>(GMT -3:00) Brazil, Buenos Aires, Georgetown</option>
+                        <option value="-02:00" <%= user.timeZone === '-02:00' ? 'selected' : '' %>>(GMT -2:00) Mid-Atlantic</option>
+                        <option value="-01:00" <%= user.timeZone === '-01:00' ? 'selected' : '' %>>(GMT -1:00) Azores, Cape Verde Islands</option>
+                        <option value="+00:00" <%= user.timeZone === '+00:00' ? 'selected' : '' %>>(GMT) Western Europe Time, London, Lisbon, Casablanca</option>
+                        <option value="+01:00" <%= user.timeZone === '+01:00' ? 'selected' : '' %>>(GMT +1:00) Brussels, Copenhagen, Madrid, Paris</option>
+                        <option value="+02:00" <%= user.timeZone === '+02:00' ? 'selected' : '' %>>(GMT +2:00) Kaliningrad, South Africa</option>
+                        <option value="+03:00" <%= user.timeZone === '+03:00' ? 'selected' : '' %>>(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg</option>
+                        <option value="+03:50" <%= user.timeZone === '+03:50' ? 'selected' : '' %>>(GMT +3:30) Tehran</option>
+                        <option value="+04:00" <%= user.timeZone === '+04:00' ? 'selected' : '' %>>(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi</option>
+                        <option value="+04:50" <%= user.timeZone === '+04:50' ? 'selected' : '' %>>(GMT +4:30) Kabul</option>
+                        <option value="+05:00" <%= user.timeZone === '+05:00' ? 'selected' : '' %>>(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent</option>
+                        <option value="+05:50" <%= user.timeZone === '+05:50' ? 'selected' : '' %>>(GMT +5:30) Bombay, Calcutta, Madras, New Delhi</option>
+                        <option value="+05:75" <%= user.timeZone === '+05:75' ? 'selected' : '' %>>(GMT +5:45) Kathmandu, Pokhara</option>
+                        <option value="+06:00" <%= user.timeZone === '+06:00' ? 'selected' : '' %>>(GMT +6:00) Almaty, Dhaka, Colombo</option>
+                        <option value="+06:50" <%= user.timeZone === '+06:50' ? 'selected' : '' %>>(GMT +6:30) Yangon, Mandalay</option>
+                        <option value="+07:00" <%= user.timeZone === '+07:00' ? 'selected' : '' %>>(GMT +7:00) Bangkok, Hanoi, Jakarta</option>
+                        <option value="+08:00" <%= user.timeZone === '+08:00' ? 'selected' : '' %>>(GMT +8:00) Beijing, Perth, Singapore, Hong Kong</option>
+                        <option value="+08:75" <%= user.timeZone === '+08:75' ? 'selected' : '' %>>(GMT +8:45) Eucla</option>
+                        <option value="+09:00" <%= user.timeZone === '+09:00' ? 'selected' : '' %>>(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk</option>
+                        <option value="+09:50" <%= user.timeZone === '+09:50' ? 'selected' : '' %>>(GMT +9:30) Adelaide, Darwin</option>
+                        <option value="+10:00" <%= user.timeZone === '+10:00' ? 'selected' : '' %>>(GMT +10:00) Eastern Australia, Guam, Vladivostok</option>
+                        <option value="+10:50" <%= user.timeZone === '+10:50' ? 'selected' : '' %>>(GMT +10:30) Lord Howe Island</option>
+                        <option value="+11:00" <%= user.timeZone === '+11:00' ? 'selected' : '' %>>(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
+                        <option value="+11:50" <%= user.timeZone === '+11:50' ? 'selected' : '' %>>(GMT +11:30) Norfolk Island</option>
+                        <option value="+12:00" <%= user.timeZone === '+12:00' ? 'selected' : '' %>>(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>
+                        <option value="+12:75" <%= user.timeZone === '+12:75' ? 'selected' : '' %>>(GMT +12:45) Chatham Islands</option>
+                        <option value="+13:00" <%= user.timeZone === '+13:00' ? 'selected' : '' %>>(GMT +13:00) Apia, Nukualofa</option>
+                        <option value="+14:00" <%= user.timeZone === '+14:00' ? 'selected' : '' %>>(GMT +14:00) Line Islands, Tokelau</option>
+                    </select>
+                </div>
+                <!-- Social Media Section -->
+                <div class="detail-item">
+                    <label for="instagram">Instagram:</label>
+                    <input type="text" id="instagram" name="instagram" value="<%= user.instagram ? user.instagram : '' %>" placeholder="@userName">
+                </div>
+                <div class="detail-item">
+                    <label for="facebook">Facebook:</label>
+                    <input type="text" id="facebook" name="facebook" value="<%= user.facebook ? user.facebook : '' %>" placeholder="@userName">
+                </div>
+                <div class="detail-item">
+                    <label for="twitter">Twitter:</label>
+                    <input type="text" id="twitter" name="twitter" value="<%= user.twitter ? user.twitter : '' %>" placeholder="@userName">
+                </div>
+            </div>
+            <!-- Submit Button -->
+            <div class="detail-button">
+              <button type="submit" class="submit-btn">Update Profile</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

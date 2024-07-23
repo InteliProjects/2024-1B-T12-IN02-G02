@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Define characters that will be used and viewport for responsiveness -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title of the webpage -->
+    <title>Self-assessment Decision Making</title>
+     <!-- Tag to use CSS -->
+    <style>
+        /* General body styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+        }
+        /* Styling for the main container box, including shadow and responsive width */
+        .shadowBox {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #fff;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow-y: auto;
+            margin: auto;
+        }
+        /* Styling for each question block */
+        .question {
+            margin-bottom: 20px;
+        }
+        /* Styling for list within question blocks */
+        .question ul {
+            list-style: none;
+            padding: 0;
+        }
+        /* Styling for list items in question blocks */
+        .question li {
+            margin-bottom: 10px;
+        }
+        /* Styling for radio buttons, adding margin for alignment */
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+        /* Styling for scenario blocks within question sections */
+        .question .scenario {
+            background-color: #e7f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        /* Styling for the submit button */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+        }
+        /* Centered top navigation buttons with styling for hover effect */
+        .top-buttons {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .top-buttons button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #fff;
+            color: #000;
+            border: 2px solid #000;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        /* Hover effect for navigation buttons */
+        .top-buttons button:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main container with a shadow effect for styling -->
+<div class="shadowBox">
+    <!-- Main title for the assessment form -->
+    <h1>Decision Making Self Assessment</h1>
+
+    <!-- Container for navigation buttons -->
+    <div class="top-buttons">
+        <!-- Button to navigate to the self-assessment collaboration page -->
+        <button onclick="location.href='/assessment/self-assessment-collaboration'">Self-assessment Collaboration</button>
+        <!-- Disabled button indicating the current page -->
+        <button onclick="location.href='/assessment/self-assessment-decision-making'" disabled>Self-assessment Decision Making</button>
+    </div>
+
+    <!-- Form for submitting decision making self-assessment, method POST -->
+    <form action="/self-assessment-decision-making" method="POST">
+        <!-- Options for the first question (radio buttons to select one) -->
+        <div class="question">
+            <h2>1. When working on projects, I:</h2>
+            <ul>
+                <li><label><input type="radio" name="question1" value="A" required> A) Like tasks that are clear and have defined outcomes</label></li>
+                <li><label><input type="radio" name="question1" value="B" required> B) Am comfortable when task and outcomes are not well defined</label></li>
+            </ul>
+        </div>
+
+        <!-- Second question with options -->
+        <div class="question">
+            <h2>2. If there are major changes during a project, I:</h2>
+            <ul>
+                <li><label><input type="radio" name="question2" value="A" required> A) Tend to be annoyed because I like to stick to the original work</label></li>
+                <li><label><input type="radio" name="question2" value="B" required> B) Easily adapt the work plan to the changes</label></li>
+            </ul>
+        </div>
+
+          <!-- Third question with options -->
+        <div class="question">
+            <h2>3. When it comes to planning I rather:</h2>
+            <ul>
+                <li><label><input type="radio" name="question3" value="A" required> A) Make decisions quickly without knowing the outcomes exactly.</label></li>
+                <li><label><input type="radio" name="question3" value="B" required> B) Prepare a few options and think through them before I decide</label></li>
+            </ul>
+        </div>
+        <!-- Forth question with options -->
+        <div class="question">
+            <h2>4. In projects I am more a person who:</h2>
+            <ul>
+                <li><label><input type="radio" name="question4" value="A" required> A) Relies on facts and researched data for analyzing the problem and proposing solutions.</label></li>
+                <li><label><input type="radio" name="question4" value="B" required> B) Sees the underlying problem as well as potential solutions, which might not be visible for others.</label></li>
+            </ul>
+        </div>
+        <!-- Fifth question with options -->    
+        <div class="question">
+            <h2>5. Between two options, choose one that describes you the best.</h2>
+            <ul>
+                <li><label><input type="radio" name="question5" value="A" required> A) I value the relations within my team and try to make each member feel included and important. I appreciate their opinion and seek their approval before making a final decision. My big motivation is to maintain harmony.</label></li>
+                <li><label><input type="radio" name="question5" value="B" required> B) I value co-workers that have a sense of purpose and can speak and act concretely. I prefer to take action, rather than dreaming of impossible opportunities. I prefer to rely on rules in order to move forward. I am motivated by the results my decisions will bring.</label></li>
+            </ul>
+        </div>
+        <!-- Sixth question with options -->
+        <div class="question">
+            <h2>6. Please read the following situation and choose the solution that fit you best:</h2>
+            <div class="scenario">
+                <p>You are a team leader and have a worker that is showing poor results, which normally would lead to dismissal of this worker. However, you are also aware that his life circumstances has changed drastically, which causes stress. And might explain his poor performance. Because he/she does not deliver the expected results, other workers do his/her job and become unsatisfied with extra workload. You already tried talking to him/her, but situation hasn`t changed much. What would be you action plan?</p>
+            </div>
+            <ul>
+                <li><label><input type="radio" name="question6" value="A" required> A) I understand that everyone can encounter problems, but I also have responsibilities as a leader to deliver results and care for the whole team, so I will have to replace this person.</label></li>
+                <li><label><input type="radio" name="question6" value="B" required> B) I will do my best to make things work out for both sides. The worker will stay employed, I accept lesser performance, I will see if I can adjust the work and will discuss with other workers why they might have to help the worker.</label></li>
+            </ul>
+        </div>
+
+        <!-- Submit button to send the form data -->
+        <button type="submit" class="submit-btn">Send</button>
+    </form>
+</div>

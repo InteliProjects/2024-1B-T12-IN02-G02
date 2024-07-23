@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Feedbacks</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div>
+        <h1>Decision Making Feedbacks</h1>
+        <!-- Each circle represents a round of the game, green circles indicate that this round has already been played, yellow circles indicate the current round and gray circles indicate future rounds  -->
+        <div class="timeline">
+            <a class="circle green" onclick="submitRound(1)">R1</a>
+            <a class="line"></a>
+            <a class="circle green" onclick="submitRound(2)">R2</a>
+            <div class="line"></div>
+            <a class="circle green" onclick="submitRound(3)">R3</a>
+            <div class="line"></div>
+            <a class="circle green" onclick="submitRound(4)">R4</a>
+            <div class="line"></div>
+            <a class="circle green" onclick="submitRound(5)">R5</a>
+            <div class="line"></div>
+            <a class="circle green" onclick="submitRound(6)">R6</a>
+            <div class="line"></div>
+            <a class="circle green" onclick="submitRound(7)">R7</a>
+            <div class="line"></div>
+            <a class="circle green" onclick="submitRound(8)">R8</a>
+        </div>
+        <br>
+        <div class="feedback-buttons">
+            <button onclick="location.href='/assessment/feedback-Collaboration'">Collaboration Feedbacks</button>
+            <!-- Nothing happens when the user clicks here, because they are already on the page -->
+            <button>Decision Making Feedbacks</button>
+            <!-- By clicking on this button, the user will be redirected to the feedback decision making page -->
+        </div>
+        <!-- Skills Chart -->
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <!-- Skills Chart -->
+    <script>
+        let myChart = null;
+
+        function submitRound(round) {
+            // Crie uma requisição fetch para enviar o valor do round para o servidor
+            var url = '/assessment/feedback-decision-making/round'; // URL da rota no seu servidor
+
+            fetch(url, {
+                method: 'POST', // Método da requisição
+                headers: {
+                    'Content-Type': 'application/json' // Tipo de conteúdo
+                },
+                body: JSON.stringify({ round: round }) // Corpo da requisição
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao fazer a requisição: ' + response.statusText);
+                    }
+                    return response.json(); // Retorna os dados da resposta como JSON
+                })
+                .then(data => {
+                    console.log('Feedbacks do round' + '' + round + ':', data);
+
+                    // Initialize the sums for each type
+                    const typeSums = {
+                        analytical: 0,
+                        conceptual: 0,
+                        directive: 0,
+                        behavioral: 0
+                    };
+
+                    // Iterate through the feedbacks and sum the answers for each type
+                    data.forEach(feedback => {
+                        if (feedback.answer in typeSums) {
+                            typeSums[feedback.answer] += 1;
+                        }
+                    });
+
+                    // Extract the types and their corresponding sums
+                    const types = Object.keys(typeSums);
+                    const scores = Object.values(typeSums);
+
+                    const maxScore = Math.max(...scores);
+                    const maxCharacteristic = types[scores.indexOf(maxScore)];
+
+                    const professionalRole = document.getElementById('professionalRole')
+
+                    // Verificar se myChart já foi criado e destruí-lo se necessário
+                    if (myChart) {
+                        myChart.destroy();
+                    }
+
+                    // Criar um novo gráfico
+                    const ctx = document.getElementById('myChart').getContext('2d');
+                    myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['analytical', 'conceptual', 'directive', 'behavioral'],
+                            datasets: [{
+                                label: 'Feedback Scores',
+                                data: scores,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro durante a requisição:', error);
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/assessment/feedback-decision-making/showFeedbacks', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao fazer a requisição: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Feedbacks:', data);
+
+                    // Initialize the sums for each type
+                    const typeSums = {
+                        analytical: 0,
+                        conceptual: 0,
+                        directive: 0,
+                        behavioral: 0
+                    };
+
+                    // Iterate through the feedbacks and sum the answers for each type
+                    data.forEach(feedback => {
+                        if (feedback.answer in typeSums) {
+                            typeSums[feedback.answer] += 1;
+                        }
+                    });
+
+                    // Extract the types and their corresponding sums
+                    const types = Object.keys(typeSums);
+                    const scores = Object.values(typeSums);
+
+                    const maxScore = Math.max(...scores);
+                    const maxCharacteristic = types[scores.indexOf(maxScore)];
+
+                    const professionalRole = document.getElementById('professionalRole');
+
+                    // Criar um novo gráfico
+                    const ctx = document.getElementById('myChart').getContext('2d');
+                    myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['analytical', 'conceptual', 'directive', 'behavioral'],
+                            datasets: [{
+                                label: 'Feedback Scores',
+                                data: scores,
+                                backgroundColor: 'rgba(30, 90, 111, 0.2)',
+                                borderColor: 'rgba(30, 90, 111)',
+                                borderWidth: 1.5,
+                                pointBackgroundColor: 'rgb(255, 99, 132)',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: 'rgb(255, 99, 132)'
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro durante a requisição:', error);
+                });
+        });
+    </script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .timeline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            margin-top: 50px;
+        }
+
+        .circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            border: 3px solid transparent;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        /*Circle.green, Circle.yellow and Circle.gray changes the color of the circle */
+        .circle.green {
+            background: linear-gradient(135deg, #4CAF50, #81C784);
+            text-decoration: none;
+            /* Remove o sublinhado */
+        }
+
+        .circle.yellow {
+            background: linear-gradient(135deg, #FF9800, #FFB74D);
+        }
+
+        .circle.gray {
+            background: linear-gradient(135deg, #9E9E9E, #BDBDBD);
+        }
+
+        .circle:hover {
+            /*Animates when you hover the mouse over a circle */
+            transform: scale(1.1);
+        }
+
+        .line {
+            width: 50px;
+            height: 5px;
+            background-color: #ccc;
+        }
+
+        .more-rounds {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1em;
+            color: gray;
+        }
+
+        .more-rounds span {
+            margin: 0 5px;
+        }
+
+        .feedback-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .feedback-buttons button {
+            border: 1px solid #000;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .feedback-buttons button:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Graphic styles */
+        .chart-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .chart-header h2 {
+            font-size: 1.2em;
+            margin: 0;
+            color: #666;
+        }
+
+        .chart-header h3 {
+            font-size: 1.5em;
+            margin: 10px 0;
+            color: #1E5A6F;
+        }
+
+        .chart-header span {
+            font-weight: normal;
+            color: #666;
+        }
+
+        .chart {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 200px;
+            margin-top: 20px;
+        }
+
+        .bar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bar {
+            width: 30px;
+            background: linear-gradient(to top, #1E5A6F, #57A1BB);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .bar span {
+            position: absolute;
+            top: -25px;
+            color: #1E5A6F;
+            font-weight: bold;
+        }
+
+        .bar-container p {
+            margin-top: 10px;
+            color: #1E5A6F;
+        }
+
+        .bar:hover {
+            transform: scale(1.1);
+        }
+    </style>
+
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Global styles for the page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        /* Container for the profile section */
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: white;
+            margin: 20px;
+            margin-top: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header section containing profile picture and status */
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Profile picture styling */
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Camera icon positioning and styling */
+        .camera-icon {
+            position: absolute;
+            bottom: 23px;
+            right: 8px;
+            background-color: white;
+            border-radius: 50%;
+            padding: 5px;
+        }
+
+        /* Status section styling */
+        .status {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        /* Green dot indicating active status */
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background-color: green;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        /* Grid layout for profile details */
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px 20px;
+            /* Spacing between items */
+            margin-top: 20px;
+        }
+
+        /* Styling for each detail item */
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Label styling */
+        .detail-item label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Input field styling */
+        .detail-item input {
+            padding: 15px;
+            /* Increased padding */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            /* Increased font size */
+        }
+
+        /* Styling for disabled input fields */
+        .detail-item input[disabled] {
+            color: #555;
+        }
+
+        /* Email item spans 2 columns */
+        .email-item {
+            grid-column: span 2;
+        }
+
+        /* Phone number next to email */
+        .phone-item {
+            grid-column: span 1;
+        }
+
+        .backButton {
+            margin-right: 850px;
+        }
+    </style>
+    <title>Profile Page</title>
+</head>
+
+<body>
+    <div class="profile-container">
+        <img src="/images/back.svg" class="backButton" onclick="location.href='/team-page'">
+        <!-- Profile header with image, camera icon, and status -->
+        <div class="profile-header">
+            <img id="profileImage" src='/images/default-profile.jpg' alt="Profile Picture" class="profile-pic">
+            <div class="camera-icon">
+                <img src="/images/camera-icon.png" width="25px" alt="Camera Icon">
+            </div>
+            <div class="status">
+                <span class="status-dot"></span> Active
+            </div>
+        </div>
+        <!-- Profile details section -->
+        <div class="profile-details">
+            <!-- Name -->
+            <div class="detail-item">
+                <label>Name</label>
+                <input type="text" id="name" disabled>
+            </div>
+            <!-- Gender -->
+            <div class="detail-item">
+                <label>Gender</label>
+                <input type="text" id="gender" disabled>
+            </div>
+            <!-- Pronouns input -->
+            <div class="detail-item">
+                <label>Pronouns</label>
+                <input type="text" id="pronouns" disabled>
+            </div>
+            <!-- First language input -->
+            <div class="detail-item">
+                <label>First Language</label>
+                <input type="text" id="firstLanguage" disabled>
+            </div>
+            <!-- Time Zone input -->
+            <div class="detail-item">
+                <label>Time Zone</label>
+                <input type="text" id="timeZone" disabled>
+            </div>
+            <!-- Phone Number input -->
+            <div class="detail-item">
+                <label>Phone Number</label>
+                <input type="text" id="phone" disabled>
+            </div>
+            <!-- Country input -->
+            <div class="detail-item">
+                <label>Nationality</label>
+                <input type="text" id="nationality" disabled>
+            </div>
+            <!-- Birthday input -->
+            <div class="detail-item">
+                <label>Birthdate</label>
+                <input type="text" id="birthdate" disabled>
+            </div>
+            <!-- University input -->
+            <div class="detail-item">
+                <label>University</label>
+                <input type="text" id="university" disabled>
+            </div>
+            <!-- Email address input -->
+            <div class="detail-item email-item">
+                <label>Email Address</label>
+                <input type="email" id="email" disabled>
+            </div>
+            <!-- Instagram input -->
+            <div class="detail-item">
+                <label>Instagram</label>
+                <input type="text" id="instagram" disabled>
+            </div>
+            <!-- Facebook input -->
+            <div class="detail-item">
+                <label>Facebook</label>
+                <input type="text" id="facebook" disabled>
+            </div>
+            <!-- Twitter input -->
+            <div class="detail-item">
+                <label>Twitter</label>
+                <input type="text" id="twitter" disabled>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get user ID from URL query parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('userId');
+
+            if (userId) {
+                fetch(`/user/${userId}`, { method: 'GET' })
+                    .then(response => response.json())
+                    .then(user => {
+                        document.getElementById('name').value = user.name;
+                        document.getElementById('gender').value = user.gender;
+                        document.getElementById('pronouns').value = user.pronouns;
+                        document.getElementById('firstLanguage').value = user.firstLanguage;
+                        document.getElementById('timeZone').value = user.timeZone;
+                        document.getElementById('phone').value = user.phone;
+                        document.getElementById('nationality').value = user.country;
+                        document.getElementById('birthdate').value = user.birthdate;
+                        document.getElementById('university').value = user.university;
+                        document.getElementById('email').value = user.email;
+                        document.getElementById('facebook').value = user.facebook;
+                        document.getElementById('twitter').value = user.twitter;
+                        document.getElementById('instagram').value = user.instagram;
+                        document.getElementById('profileImage').setAttribute('src', user.profileImage);
+
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                console.error('User ID not found in URL');
+            }
+        });
+
+    </script>
+</body>
+
+</html>

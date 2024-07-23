@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1040px;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    </style>
+</head>
+
+<body>
+    <!-- Form to update round for a universe -->
+    <form action="/updateRound" method="POST">
+        <h1>Manage Universe</h1>
+        
+        <!-- Dropdown to select a universe -->
+        <select name="universeId" id="universe">
+        </select>
+        
+        <div>
+            <!-- This div can be used to display additional information or messages -->
+        </div>
+        
+        <!-- Dropdown to select a round -->
+        <h2>Change Round</h2>
+        <select name="round">
+            <!-- Options for different rounds -->
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+        </select>
+        
+        <!-- Submit button to change the round -->
+        <button type="submit">Change Round</button>
+    </form>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fetching list of universes from server
+        fetch('/listUniverse')
+            .then(response => response.json())
+            .then(data => {
+                const universeSelect = document.getElementById('universe');
+                // Iterating over fetched data to populate dropdown
+                data.forEach(universe => {
+                    let option = new Option(universe.name, universe.id);
+                    option.text = universe.number;
+                    option.value = universe.id;
+                    universeSelect.appendChild(option);
+                });
+            });
+    });
+</script>
+
+</html>
